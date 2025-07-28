@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Feedback Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f0f8ff;
+    }
+    input, button, select {
+      padding: 10px;
+      font-size: 16px;
+      margin: 10px 0;
+    }
+    .card {
+      background: white;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <h2>📊 Student Feedback Dashboard</h2>
+
+  <input type="text" id="stuid" placeholder="Enter Student ID">
+  <input type="text" id="dob" placeholder="Enter DOB (dd/mm/yyyy)">
+  <select id="month">
+    <option value="">-- All Months --</option>
+    <option value="JULY">JULY</option>
+    <option value="AUGUST">AUGUST</option>
+    <option value="SEPTEMBER">SEPTEMBER</option>
+  </select>
+  <button onclick="fetchFeedback()">Get Report</button>
+
+  <div id="result"></div>
+
+  <script>
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRUFkL3J_mLSf-jzXVHriZWEorU0FSCZ3lu5ci-vvpL0cKyTtoiNIlIMbM_sWZ68AWAyznY4Npp3Qnj/pub?gid=0&single=true&output=csv";
+
+    async function fetchFeedback() {
+      const stuid = document.getElementById("stuid").value.trim();
+      const dob = document.getElementById("dob").value.trim();
+      const month = document.getElementById("month").value.trim().toUpperCase();
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = "Loading...";
+
+      const response = await fetch(CSV_URL);
+      const csvText = await response.text();
+
+      const rows = csvText.split("\n").map(row => row.split(","));
+      const headers = rows[0];
+      const data = rows.slice(1);
+
+      const
